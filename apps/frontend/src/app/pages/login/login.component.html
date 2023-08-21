@@ -1,0 +1,45 @@
+<mat-toolbar color="primary">
+    <span>Login</span>
+    <span class="spacer"></span>
+    <button routerLink="/" mat-button class="example-icon" aria-label="Example icon-button with share icon">
+        Home
+    </button>
+    <mat-progress-bar mode="query"></mat-progress-bar>
+</mat-toolbar>
+
+<div><mat-progress-bar mode="indeterminate" color="accent" *ngIf="loading$ | async" /></div>
+
+<div class="login-div">
+    <form class="login-form" (submit)="handleLogin()" [formGroup]="formGroup">
+        <h2>Login</h2>
+        <mat-form-field appearance="outline">
+            <mat-label>Email address</mat-label>
+            <input matInput 
+                type="email" 
+                placeholder="example@domain.com" 
+                formControlName="email" 
+                [errorStateMatcher]="matcher">
+            <mat-error 
+                *ngIf="formGroup.controls.email.hasError('email') && !formGroup.controls.email.hasError('required')">
+                <small>Please enter a valid email address</small>
+            </mat-error>
+            <mat-error *ngIf="formGroup.controls.email.hasError('required')">
+                <small>Email is <strong>required</strong></small>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input 
+                matInput 
+                type="password" 
+                formControlName="password" 
+                placeholder="••••••••••">
+        </mat-form-field>
+    
+        <button 
+            type="submit" 
+            mat-flat-button 
+            [disabled]="!formGroup.valid" 
+            color="primary">Login</button>
+    </form>
+</div>
