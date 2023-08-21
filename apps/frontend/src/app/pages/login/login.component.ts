@@ -13,7 +13,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService } from '../../services/auth/auth.service';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { Store } from '@ngxs/store';
-import { ShowLoading } from '../../state/app/app.actions';
+import { ShowEmail, ShowLoading } from '../../state/app/app.actions';
 
 @Component({
   selector: 'app-login',
@@ -55,6 +55,7 @@ export class LoginComponent {
     if(this.formGroup.valid){
       this.setLoading(true);
       this.authService.login().then(result => {
+        this.setEmail(this.formGroup.value.email!);
         this.router.navigate(['/']);
       }).catch(err => {
         this.snackBar.open(err, "Retry").afterDismissed().subscribe(() => {
@@ -66,8 +67,12 @@ export class LoginComponent {
     }
   }
 
-  setLoading(_loading: boolean) {
-    this.store.dispatch(new ShowLoading(_loading))
+  setLoading(loading: boolean) {
+    this.store.dispatch(new ShowLoading(loading));
+  }
+
+  setEmail(email: string) {
+    this.store.dispatch(new ShowEmail(email));
   }
 }
 
