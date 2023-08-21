@@ -10,7 +10,7 @@ export class AuthService {
   async login():Promise<string> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject(new Error("Login unsuccessfull!"));
+        // reject(new Error("Login unsuccessfull!"));
         resolve("Login successfully!");
       }, 1000);
     });
