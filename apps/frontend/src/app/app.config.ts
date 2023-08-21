@@ -6,13 +6,14 @@ import {
 import { appRoutes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {NgxsModule} from '@ngxs/store'
+import { AppState } from './state/app/app.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideAnimations(),
     importProvidersFrom(
-      NgxsModule.forRoot([], {
+      NgxsModule.forRoot([AppState], {
         developmentMode: true
       })
     )
