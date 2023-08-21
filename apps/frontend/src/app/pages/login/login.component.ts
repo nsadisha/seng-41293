@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,9 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService } from '../../services/auth/auth.service';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { AppState } from '../../state/app/app.state';
 import { ShowLoading } from '../../state/app/app.actions';
 
 @Component({
@@ -39,7 +37,6 @@ import { ShowLoading } from '../../state/app/app.actions';
 })
 
 export class LoginComponent {
-  loading$: Observable<boolean>;
   formGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
@@ -52,7 +49,6 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
     private store: Store
   ){
-    this.loading$ = this.store.select(AppState.loading);
   }
 
   handleLogin() {

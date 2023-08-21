@@ -7,8 +7,6 @@
     <mat-progress-bar mode="query"></mat-progress-bar>
 </mat-toolbar>
 
-<div><mat-progress-bar mode="indeterminate" color="accent" *ngIf="loading$ | async" /></div>
-
 <div class="login-div">
     <form class="login-form" (submit)="handleLogin()" [formGroup]="formGroup">
         <h2>Login</h2>
