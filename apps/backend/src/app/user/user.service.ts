@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
   
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<User> {
     return this.userModel.create(createUserDto);
   }
 
@@ -20,6 +20,10 @@ export class UserService {
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
+  }
+
+  findUserWithEmail(_email: string) {
+    return this.userModel.findOne({email: _email}).exec();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
