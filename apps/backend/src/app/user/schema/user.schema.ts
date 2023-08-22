@@ -7,7 +7,7 @@ export class User implements IUser{
     @Prop()
     name: string;
 
-    @Prop()
+    @Prop({ unique: true })
     email: string;
 
     @Prop()
