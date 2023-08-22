@@ -1,0 +1,9 @@
+{
+  "lastRun": null,
+  "migrations": [
+    {
+      "title": "1692732186124-userschema.ts",
+      "timestamp": null
+    }
+  ]
+}
