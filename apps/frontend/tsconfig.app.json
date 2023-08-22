@@ -2,7 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": []
+    "types": [],
+    "paths": {
+      "@seng-41293/model": ["libs/model/src/index.ts"]
+    }
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"],
