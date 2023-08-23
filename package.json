@@ -29,6 +29,7 @@
     "@ngxs/store": "^3.8.1",
     "@nx/angular": "16.4.0",
     "axios": "^1.0.0",
+    "bcrypt": "^5.1.1",
     "migrate": "^2.0.0",
     "mongoose": "^7.4.3",
     "reflect-metadata": "^0.1.13",
