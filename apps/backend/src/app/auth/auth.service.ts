@@ -2,12 +2,10 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UserService } from '../user/user.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { User } from '../user/schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../user/dto/user.dto';
 import { SuccessAuthDto } from './dto/success-auth.dto';
 
-import { AppConfigService } from '../config/config.service';
 import bcrypt from "bcrypt";
 
 @Injectable()
