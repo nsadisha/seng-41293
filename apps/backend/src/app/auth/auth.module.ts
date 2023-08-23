@@ -23,6 +23,6 @@ import { AppConfigService } from '../config/config.service';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AppConfigService],
 })
 export class AuthModule {}

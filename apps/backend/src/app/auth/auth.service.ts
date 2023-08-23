@@ -7,15 +7,25 @@ import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../user/dto/user.dto';
 import { SuccessAuthDto } from './dto/success-auth.dto';
 
+import { AppConfigService } from '../config/config.service';
+import bcrypt from "bcrypt";
+
 @Injectable()
 export class AuthService {
-  
+  salt: string;
+
   constructor(
     private userService: UserService,
     private jwtService: JwtService
-  ){}
+  ){
+    this.salt = bcrypt.genSaltSync(10);
+  }
   
   register(createAuthDto: CreateAuthDto) {
+    createAuthDto = {
+      ...createAuthDto,
+      password: this.toHash(createAuthDto.password)
+    };
     return this.userService.create(createAuthDto);
   }
 
@@ -25,7 +35,7 @@ export class AuthService {
       throw new NotFoundException('Email not found!');
     }
     
-    const isLoginSuccess: boolean = user.password === loginAuthDto.password;
+    const isLoginSuccess: boolean = this.compairHash(loginAuthDto.password, user.password);
 
     if(!isLoginSuccess){
       throw new UnauthorizedException('Invalid password!');
@@ -40,5 +50,13 @@ export class AuthService {
     };
 
     return successResponse;
+  }
+
+  private toHash(password: string): string {
+    return bcrypt.hashSync(password, this.salt);
+  }
+
+  private compairHash(password: string, hash: string): boolean {
+    return bcrypt.compareSync(password, hash);
   }
 }
