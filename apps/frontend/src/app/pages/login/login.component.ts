@@ -11,9 +11,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService } from '../../services/auth/auth.service';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Store } from '@ngxs/store';
-import { ShowEmail, ShowLoading } from '../../state/app/app.actions';
+import { ShowEmail, ShowLoading, ShowToken } from '../../state/app/app.actions';
+import { catchError, finalize, tap } from 'rxjs';
+
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -35,7 +44,6 @@ import { ShowEmail, ShowLoading } from '../../state/app/app.actions';
     MatSnackBarModule
   ],
 })
-
 export class LoginComponent {
   formGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -54,17 +62,36 @@ export class LoginComponent {
   handleLogin() {
     if(this.formGroup.valid){
       this.setLoading(true);
-      this.authService.login().then(result => {
-        this.setEmail(this.formGroup.value.email!);
-        this.router.navigate(['/']);
-      }).catch(err => {
-        this.snackBar.open(err, "Retry").afterDismissed().subscribe(() => {
-          this.formGroup.controls.password.setValue("");
-        });
-      }).finally(() => {
-        this.setLoading(false);
-      })
+      const creadentials = this.formGroup.value;
+      
+      this.authService.login(creadentials).pipe(
+        tap(data => {
+          this.setEmail(data.email);
+          this.setToken(data.access_token);
+          this.router.navigate(['/']);
+          this.showSnackbar("Login successful!", "Dismiss")
+        }),
+        catchError((err) => {
+          this.showSnackbarWithError(err.error.message, err.status);
+          return "";
+        }),
+        finalize(() => {
+          this.setLoading(false);
+        })
+      ).subscribe()
     }
+  }
+
+  showSnackbarWithError(error: string, status: number) {
+    this.snackBar.open(error, "Retry").afterDismissed().subscribe(() => {
+      if(status == 404)
+        this.formGroup.controls.email.setValue("");
+      this.formGroup.controls.password.setValue("");
+    });
+  }
+
+  showSnackbar(message: string, actionLabel: string) {
+    this.snackBar.open(message, actionLabel);
   }
 
   setLoading(loading: boolean) {
@@ -74,11 +101,8 @@ export class LoginComponent {
   setEmail(email: string) {
     this.store.dispatch(new ShowEmail(email));
   }
-}
 
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  setToken(token: string) {
+    this.store.dispatch(new ShowToken(token));
   }
 }
