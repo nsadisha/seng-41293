@@ -1,0 +1,30 @@
+:host {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: min-content auto;
+}
+
+.register-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+
+        @media only screen and (max-width: 1000px){
+            width: 50%;
+        }
+
+        @media only screen and (max-width: 600px){
+            width: 90%;
+        }
+    }
+    
+}
