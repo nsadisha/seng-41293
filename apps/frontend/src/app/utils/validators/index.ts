@@ -1,0 +1,1 @@
+export * from './confirm-password/confirm-password.validator';
