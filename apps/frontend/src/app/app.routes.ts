@@ -8,5 +8,9 @@ export const appRoutes: Route[] = [
     {
         path: 'login',
         loadComponent: () => import ('./pages/login/login.component') .then ( (c) => c.LoginComponent),
+    },
+    {
+        path: 'register',
+        loadComponent: () => import ('./pages/register/register.component') .then ( (c) => c.RegisterComponent),
     }
 ];
