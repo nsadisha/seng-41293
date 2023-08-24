@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { UrlConfig } from '../../config/url.config';
+import { ILoginUser } from '../../../../../../libs/model/src/index'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient,
+    private urlConfig: UrlConfig
+    ) {}
 
-  async login():Promise<string> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // reject(new Error("Login unsuccessfull!"));
-        resolve("Login successfully!");
-      }, 1000);
-    });
+  login(credentials: {}) {
+    return this.httpClient.post<ILoginUser>(this.urlConfig.LOGIN_URL, credentials)
   }
 }
