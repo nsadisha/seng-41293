@@ -91,7 +91,7 @@ export class LoginComponent {
   }
 
   showSnackbar(message: string, actionLabel: string) {
-    this.snackBar.open(message, actionLabel);
+    this.snackBar.open(message, actionLabel, { duration: 3000 });
   }
 
   setLoading(loading: boolean) {
